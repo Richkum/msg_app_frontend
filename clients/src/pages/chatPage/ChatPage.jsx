@@ -1,7 +1,7 @@
 import React from "react";
-import Sidebar from "../../components/chatpage/SideBar";
-import ChatWindow from "../../components/chatpage/ChatWindow";
-import MobileNavBar from "../../components/chatpage/MobileNav";
+import Sidebar from "../../components/chatcomponent/SideBar";
+import ChatWindow from "../../components/chatcomponent/ChatWindow";
+import MobileNavBar from "../../components/chatcomponent/MobileNav";
 
 const ChatPage = () => {
   return (

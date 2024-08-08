@@ -8,29 +8,35 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("id");
+  useEffect(
+    () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("id");
+      console.log("token", token, "userId", userId);
 
-    if (token && userId) {
-      const decodedToken = jwtDecode(token);
-      if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        delete axios.defaults.headers.common["Authorization"];
-        setIsAuthenticated(false);
-        setUser(null);
-        navigate("/");
-      } else {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        setIsAuthenticated(true);
-        setUser({ id: userId });
+      if (token && userId) {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.exp * 1000 < Date.now()) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          delete axios.defaults.headers.common["Authorization"];
+          setIsAuthenticated(false);
+          setUser(null);
+          navigate("/");
+        } else {
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          setIsAuthenticated(true);
+          setUser({ id: userId });
+          navigate("/chatPage");
+        }
       }
-    }
-  }, []);
+    },
+    [
+      /**navigate*/
+    ]
+  );
 
   const login = (userData) => {
     localStorage.setItem("token", userData.token);
@@ -38,6 +44,7 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
     setIsAuthenticated(true);
     setUser(userData.user);
+    navigate("/chatPage");
   };
 
   const logout = () => {
@@ -46,6 +53,7 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common["Authorization"];
     setIsAuthenticated(false);
     setUser(null);
+    navigate("/");
   };
 
   return (
