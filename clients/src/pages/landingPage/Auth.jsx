@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuthProvider } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import VerificationForm from "../../components/authcomponents/VerificationForm";
 import AuthForm from "../../components/authcomponents/AuthForm";
@@ -8,7 +8,7 @@ import AuthToggle from "../../components/authcomponents/AuthToggle";
 import ForgotPassword from "../../components/authcomponents/ForgotPassword";
 
 const Auth = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuthProvider();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(true);

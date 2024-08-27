@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../../context/AuthContext";
+import { useAuthProvider } from "../../../context/AuthContext";
 
 const UserName = ({ currentUsername, onUpdate }) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthProvider();
 
-  const [username, setUsername] = useState(currentUsername || "");
+  const [username, setUsername] = useState(currentUsername);
   const [password, setPassword] = useState("");
   const [isEditting, setIsEditting] = useState(false);
 
@@ -62,7 +62,7 @@ const UserName = ({ currentUsername, onUpdate }) => {
           />
           <button
             onClick={handleSave}
-            className="mt-2 w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="mt-2 w-28 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Save Username
           </button>
@@ -70,10 +70,10 @@ const UserName = ({ currentUsername, onUpdate }) => {
       ) : (
         <>
           {" "}
-          <p>{username}</p>{" "}
+          <p className="font-bold h-20">{username}</p>{" "}
           <button
             onClick={handleEdit}
-            className="mt-2 w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="mt-2 w-28 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Edit{" "}
           </button>{" "}

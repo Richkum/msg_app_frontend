@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../../../context/AuthContext";
+import { useAuthProvider } from "../../../context/AuthContext";
 
 const Bio = ({ currentBio, onUpdate }) => {
-  const { user } = useContext(AuthContext);
-  console.log("user", user);
+  const { user } = useAuthProvider();
 
-  const [bio, setBio] = useState(currentBio || "");
+  const [bio, setBio] = useState(currentBio);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleBioChange = (e) => {
@@ -49,17 +48,17 @@ const Bio = ({ currentBio, onUpdate }) => {
           />{" "}
           <button
             onClick={handleSave}
-            className="mt-2 w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="mt-2 w-28 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Save Bio{" "}
           </button>{" "}
         </>
       ) : (
         <>
-          <p>{bio}</p>{" "}
+          <p className="font-bold h-20">{bio}</p>{" "}
           <button
             onClick={handleEdit}
-            className="mt-2 w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="mt-2 w-28 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Edit{" "}
           </button>{" "}

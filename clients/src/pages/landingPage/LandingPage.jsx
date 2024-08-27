@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Auth from "../../pages/landingPage/Auth";
 import { Link } from "react-router-dom";
 import { XIcon } from "@heroicons/react/outline";
+
 const LandingPage = () => {
   const [showModal, setShowModal] = useState(false);
 

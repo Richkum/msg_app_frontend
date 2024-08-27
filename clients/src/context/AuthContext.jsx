@@ -1,22 +1,24 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const AuthProvider = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(
-    () => {
-      const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("id");
-      console.log("token", token, "userId", userId);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("id");
+    const lastPath = localStorage.getItem("lastPath");
+    console.log("lastPath", lastPath);
 
-      if (token && userId) {
+    if (token && userId) {
+      try {
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
           localStorage.removeItem("token");
@@ -24,19 +26,30 @@ export const AuthProvider = ({ children }) => {
           delete axios.defaults.headers.common["Authorization"];
           setIsAuthenticated(false);
           setUser(null);
-          navigate("/");
+          navigate("/", { replace: true });
         } else {
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           setIsAuthenticated(true);
           setUser({ id: userId });
-          navigate("/chatPage");
+
+          if (location.pathname === "/") {
+            navigate("/chatPage", { replace: true });
+          }
         }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        setIsAuthenticated(false);
+        setUser(null);
+        navigate("/", { replace: true });
       }
-    },
-    [
-      /**navigate*/
-    ]
-  );
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
+      navigate("/", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   const login = (userData) => {
     localStorage.setItem("token", userData.token);
@@ -56,9 +69,19 @@ export const AuthProvider = ({ children }) => {
     navigate("/");
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem("lastPath", location.pathname);
+    }
+  }, [location.pathname, isAuthenticated]);
+
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
+      <Outlet />
     </AuthContext.Provider>
   );
 };
+
+const useAuthProvider = () => useContext(AuthContext);
+
+export { AuthProvider, useAuthProvider };

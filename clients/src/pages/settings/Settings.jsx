@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import MobileNavBar from "../../components/chatcomponent/MobileNav";
 
 function GeneralSettings() {
   return (
@@ -30,6 +31,7 @@ function GeneralSettings() {
           </p>
         </div>
       </div>
+      <MobileNavBar />
     </div>
   );
 }
