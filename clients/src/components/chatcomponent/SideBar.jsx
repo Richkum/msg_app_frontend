@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import ChatList from "./ChatList";
 import MenuSidebar from "./MenuSidebar";
 
-const Sidebar = () => {
+const Sidebar = ({ selectedChat, setSelectedChat }) => {
   return (
     <div className="hidden md:flex top-0 z-10 md:flex-col md:w-1/3 lg:w-1/3 bg-blue-500 h-screen p-4 border-2 border-blue-800">
       <div>
@@ -15,7 +15,7 @@ const Sidebar = () => {
         </div>
         <SearchBar />
       </div>
-      <ChatList />
+      <ChatList selectedChat={selectedChat} setSelectedChat={setSelectedChat} />{" "}
     </div>
   );
 };
